@@ -45,7 +45,8 @@ public class PersonaDaoI implements PersonaDao {
 	private static final String SQL_SELECT_PERSONA = "SELECT id_persona, nombre, ape_paterno, ape_materno, email FROM PERSONA";
 
 	// Parametros por indice
-	private static final String SQL_SELECT_PERSONA_BY_ID = SQL_SELECT_PERSONA+ " WHERE id_persona = ?";
+	private static final String SQL_SELECT_PERSONA_BY_ID = SQL_SELECT_PERSONA
+			+ " WHERE id_persona = ?";
 
 	@Override
 	public void insertPersona(Persona persona) {
@@ -61,27 +62,41 @@ public class PersonaDaoI implements PersonaDao {
 
 	@Override
 	public Persona findPersonaById(long idPersona) {
-		return null;
+		Persona persona = null;
+		try {
+			// Utilizamos la clase PersonaRowMapper
+			persona = jdbcTemplate.queryForObject(SQL_SELECT_PERSONA_BY_ID,new PersonaRowMapper(), idPersona);
+		} catch (EmptyResultDataAccessException e) {
+			persona = null;
+		}
+		return persona;
+		// Esta es otra forma sin utilizar la clase PersonaRowMapper
+		// BeanPropertyRowMapper<Persona> personaRowMapper =
+		// BeanPropertyRowMapper.newInstance(Persona.
 	}
 
 	@Override
 	public List<Persona> findAllPersonas() {
-		//Esta consulta es equivalente
-		 //String sql = "SELECT * FROM PERSONA";
-		 RowMapper<Persona> personaRowMapper = ParameterizedBeanPropertyRowMapper.newInstance(Persona.class);
-		 return this.jdbcTemplate.query(SQL_SELECT_PERSONA, personaRowMapper);
+		// Esta consulta es equivalente
+		// String sql = "SELECT * FROM PERSONA";
+		RowMapper<Persona> personaRowMapper = ParameterizedBeanPropertyRowMapper
+				.newInstance(Persona.class);
+		return this.jdbcTemplate.query(SQL_SELECT_PERSONA, personaRowMapper);
 
 	}
 
 	@Override
 	public int contadorPersonasPorNombre(Persona persona) {
 		String sql = "SELECT count(*) FROM PERSONA WHERE nombre = :nombre";
-		 // Permite evitar crear un MAP de parametros y utilizar directamente el objeto persona
-		 // los atributos que coincidan con el nombre de los parametros por nombre del query
-		 // seran utilizados y proporcionados como atributos al query
-		 SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(persona);
-		 // Unicamente retorna un valor el metodo queryForInt
-		 return this.namedParameterJdbcTemplate.queryForInt(sql, namedParameters);
+		// Permite evitar crear un MAP de parametros y utilizar directamente el
+		// objeto persona
+		// los atributos que coincidan con el nombre de los parametros por
+		// nombre del query
+		// seran utilizados y proporcionados como atributos al query
+		SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(
+				persona);
+		// Unicamente retorna un valor el metodo queryForInt
+		return this.namedParameterJdbcTemplate.queryForInt(sql, namedParameters);
 
 	}
 
@@ -90,7 +105,8 @@ public class PersonaDaoI implements PersonaDao {
 		String sql = "SELECT count(*) FROM PERSONA";
 		return this.jdbcTemplate.queryForInt(sql);
 		// Esta es otra opcion si no tuvieramos jdbcTemplate
-		// return this.namedParameterJdbcTemplate.getJdbcOperations().queryForInt(sql);
+		// return
+		// this.namedParameterJdbcTemplate.getJdbcOperations().queryForInt(sql);
 
 	}
 
@@ -98,7 +114,5 @@ public class PersonaDaoI implements PersonaDao {
 	public Persona getPersonaByEmail(Persona persona) {
 		return null;
 	}
-	
-	
-	
+
 }

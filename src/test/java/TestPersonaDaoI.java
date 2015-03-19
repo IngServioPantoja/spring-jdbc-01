@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class TestPersonaDaoI {
 	private PersonaDao personaDao;
 
 	@Test
+	@Ignore
+	/* Esta prueba no se ejecutara */
 	public void deberiaMostrarPersonas() {
 		try {
 			System.out.println();
@@ -44,6 +47,7 @@ public class TestPersonaDaoI {
 	}
 
 	@Test
+	@Ignore 
 	public void testContarPersonasPorNombre() {
 		try {
 			System.out.println();
@@ -61,4 +65,23 @@ public class TestPersonaDaoI {
 			logger.error("Error JBDC", e);
 		}
 	}
+
+	@Test
+	public void deberiaEncontrarPersonaPorId() {
+		try {
+			System.out.println();
+			logger.info("Inicio del test deberiaEncontrarPersonaPorId");
+			int idPersona = 1;
+			Persona persona = personaDao.findPersonaById(idPersona);
+			// Segun la persona recuperada, deberia ser la misma que el registro
+			// 1
+			assertEquals("Admin", persona.getNombre());
+			// Imprimimos todo el objeto
+			logger.info("Persona recuperada (id=" + idPersona + "): " + persona);
+			logger.info("Fin del test deberiaEncontrarPersonaPorId");
+		} catch (Exception e) {
+			logger.error("Error JBDC", e);
+		}
+	}
+
 }
