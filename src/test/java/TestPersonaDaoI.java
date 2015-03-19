@@ -1,4 +1,3 @@
-
 import static org.junit.Assert.*;
 
 import java.util.List;
@@ -38,6 +37,26 @@ public class TestPersonaDaoI {
 			// la tabla
 			assertEquals(contadorPersonas, personaDao.contadorPersonas());
 			logger.info("Fin del test deberiaMostrarPersonas");
+
+		} catch (Exception e) {
+			logger.error("Error JBDC", e);
+		}
+	}
+
+	@Test
+	public void testContarPersonasPorNombre() {
+		try {
+			System.out.println();
+			logger.info("Inicio del test Contar Personas por nombre");
+			String nombre = "Juan";
+			Persona personaEjemplo = new Persona();
+			personaEjemplo.setNombre(nombre);
+			int noPersonasEncontradas = personaDao
+					.contadorPersonasPorNombre(personaEjemplo);
+			logger.info("Numero de personas encontradas por nombre '" + nombre
+					+ "': " + noPersonasEncontradas);
+			assertEquals(2, noPersonasEncontradas);
+			logger.info("Fin del test Contar Personas por nombre");
 		} catch (Exception e) {
 			logger.error("Error JBDC", e);
 		}

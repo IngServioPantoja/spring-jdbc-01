@@ -75,7 +75,14 @@ public class PersonaDaoI implements PersonaDao {
 
 	@Override
 	public int contadorPersonasPorNombre(Persona persona) {
-		return 0;
+		String sql = "SELECT count(*) FROM PERSONA WHERE nombre = :nombre";
+		 // Permite evitar crear un MAP de parametros y utilizar directamente el objeto persona
+		 // los atributos que coincidan con el nombre de los parametros por nombre del query
+		 // seran utilizados y proporcionados como atributos al query
+		 SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(persona);
+		 // Unicamente retorna un valor el metodo queryForInt
+		 return this.namedParameterJdbcTemplate.queryForInt(sql, namedParameters);
+
 	}
 
 	@Override
