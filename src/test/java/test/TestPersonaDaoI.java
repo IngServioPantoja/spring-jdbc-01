@@ -1,3 +1,5 @@
+package test;
+
 import static org.junit.Assert.*;
 
 import java.util.List;
@@ -138,6 +140,7 @@ public class TestPersonaDaoI {
 	}
 
 	@Test
+	@Ignore
 	public void deberiaEliminarPersona() {
 		try {
 			System.out.println();
@@ -168,5 +171,7 @@ public class TestPersonaDaoI {
 			logger.error("Error JBDC", e);
 		}
 	}
+
+
 
 }
